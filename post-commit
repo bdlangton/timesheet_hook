@@ -34,6 +34,10 @@ def get_ticket(message):
     """
     ticket_pattern = re.compile(TICKET_REGEX, re.I)
     match = ticket_pattern.search(message)
+    if not match:
+        branch = check_output(['git', 'symbolic-ref', '--short', 'HEAD']).strip()
+        match = ticket_pattern.search(branch)
+
     return match.group() if match else ''
 
 
